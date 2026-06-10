@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Каталог — UBE</title>
+  <link rel="stylesheet" href="./assets/fonts/fonts.css" />
+  <style>
+    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #09090D; --bg-card: #111118; --bg-card2: #16161F;
+      --border: #252530; --border-h: rgba(200,136,58,0.45);
+      --copper: #C8883A; --copper-lt: #E0A050; --copper-dim: rgba(200,136,58,0.12);
+      --text: #F0EAE0; --muted: #7A7690; --muted2: #55526A;
+      --contrast-body: #D8D2C8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      background-image:
+        linear-gradient(rgba(200,136,58,0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,136,58,0.09) 1px, transparent 1px);
+      background-size: 56px 56px;
+      color: var(--contrast-body);
+      font-family: 'Figtree', sans-serif;
+      font-size: 16px; line-height: 1.65;
+      overflow-x: hidden;
+    }
+    :focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ═══ NAVBAR ═══ */
+    .navbar {
+      position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 40px); max-width: 1240px;
+      background: rgba(9,9,13,0.85); backdrop-filter: blur(24px);
+      border: 1px solid rgba(200,136,58,0.12); border-radius: 16px;
+      z-index: 100; padding: 0 28px; height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .navbar.scrolled { background: rgba(9,9,13,0.97); border-color: rgba(200,136,58,0.22); box-shadow: 0 8px 48px rgba(0,0,0,0.6); }
+    .logo { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; letter-spacing: 4px; color: var(--copper); text-decoration: none; text-shadow: 0 0 20px rgba(200,136,58,0.3); }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 500; padding: 8px 12px; border-radius: 8px; text-decoration: none; transition: color 0.2s, background 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-links a.active { color: var(--copper); }
+    .nav-cta-btn { background: var(--copper); color: #09090D !important; font-weight: 700 !important; padding: 9px 20px !important; border-radius: 10px; font-size: 14px !important; min-height: 44px; display: inline-flex; align-items: center; transition: background 0.2s !important; }
+    .nav-cta-btn:hover { background: var(--copper-lt) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+    .hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.25s, opacity 0.25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; position: fixed; top: 90px; left: 20px; right: 20px; background: rgba(17,17,24,0.97); border: 1px solid var(--border); border-radius: 16px; padding: 16px; flex-direction: column; gap: 4px; z-index: 99; backdrop-filter: blur(24px); opacity: 0; transform: translateY(-10px); transition: opacity 0.25s, transform 0.25s; }
+    .mobile-menu.open { display: flex; opacity: 1; transform: translateY(0); }
+    .mobile-menu a { padding: 14px 16px; border-radius: 10px; font-size: 16px; font-weight: 500; color: var(--text); text-decoration: none; min-height: 48px; display: flex; align-items: center; transition: background 0.15s; }
+    .mobile-menu a:hover { background: rgba(200,136,58,0.1); color: var(--copper); }
+
+    /* ═══ PAGE HEADER ═══ */
+    .page-header {
+      padding: 110px 24px 48px;
+      max-width: 1240px; margin: 0 auto;
+    }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--copper); }
+    .breadcrumb-sep { color: var(--muted2); }
+    .page-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 5vw, 56px); letter-spacing: 2px; color: var(--text); line-height: 1; }
+    .page-meta { color: var(--muted); font-size: 14px; margin-top: 8px; }
+
+    /* ═══ CATEGORY GRID ═══ */
+    .cat-section { max-width: 1240px; margin: 0 auto 40px; padding: 0 24px; }
+    .cat-section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 16px;
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .cat-card {
+      position: relative; border-radius: 14px; overflow: hidden;
+      cursor: pointer; aspect-ratio: 4/3;
+      background: var(--bg-card); border: 2px solid var(--border);
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      text-decoration: none;
+    }
+    .cat-card:hover {
+      border-color: var(--border-h);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    }
+    .cat-card.active {
+      border-color: var(--copper);
+      box-shadow: 0 0 0 1px var(--copper);
+    }
+    .cat-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0.45; filter: grayscale(20%);
+      transition: opacity 0.3s, transform 0.4s, filter 0.3s;
+    }
+    .cat-card:hover img, .cat-card.active img {
+      opacity: 0.65; transform: scale(1.06); filter: grayscale(0%);
+    }
+    .cat-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 30%, rgba(0,0,0,0.15) 70%, transparent 100%);
+    }
+    .cat-card-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 10px 12px;
+    }
+    .cat-card-title {
+      font-weight: 600; font-size: 12px; color: #fff;
+      line-height: 1.3; font-family: 'Figtree', sans-serif;
+      hyphens: auto; overflow-wrap: break-word;
+    }
+    .cat-card.active .cat-card-title { color: var(--copper); }
+
+    /* ═══ SEARCH + SORT ═══ */
+    .catalog-toolbar {
+      max-width: 1240px; margin: 0 auto 32px;
+      padding: 0 24px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .search-bar {
+      display: flex; align-items: center;
+      background: rgba(22,22,31,0.9); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; flex: 1; min-width: 240px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-bar:focus-within { border-color: rgba(200,136,58,0.45); box-shadow: 0 0 0 3px rgba(200,136,58,0.08); }
+    .search-bar input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 14px; font-family: 'Figtree', sans-serif; padding: 12px 16px; }
+    .search-bar input::placeholder { color: var(--muted2); }
+    .search-bar button { background: none; border: none; padding: 0 14px; cursor: pointer; color: var(--muted); transition: color 0.2s; display: flex; align-items: center; }
+    .search-bar button:hover { color: var(--copper); }
+    .sort-select {
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text); font-family: 'Figtree', sans-serif; font-size: 14px;
+      padding: 11px 16px; border-radius: 12px; outline: none; cursor: pointer;
+      transition: border-color 0.2s; min-height: 44px;
+    }
+    .sort-select:focus { border-color: var(--copper); }
+    .filter-toggle-btn {
+      display: none; align-items: center; gap: 8px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text); font-family: 'Figtree', sans-serif; font-size: 14px;
+      padding: 11px 16px; border-radius: 12px; cursor: pointer; min-height: 44px;
+      transition: border-color 0.2s;
+    }
+    .filter-toggle-btn:hover { border-color: var(--copper); }
+
+    /* ═══ LAYOUT ═══ */
+    .catalog-layout {
+      max-width: 1240px; margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px; align-items: start;
+    }
+
+    /* ═══ SIDEBAR FILTERS ═══ */
+    .filters {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 24px;
+      position: sticky; top: 90px;
+    }
+    .filter-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; letter-spacing: 1px; color: var(--text);
+      margin-bottom: 20px; text-transform: uppercase;
+    }
+    .filter-section { margin-bottom: 24px; }
+    .filter-section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .filter-options { display: flex; flex-direction: column; gap: 8px; }
+    .filter-option {
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; padding: 6px 0; border-radius: 8px;
+    }
+    .filter-option input[type="checkbox"] { display: none; }
+    .filter-checkbox {
+      width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+      border: 1.5px solid var(--border); background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .filter-option input:checked + .filter-checkbox { background: var(--copper); border-color: var(--copper); }
+    .filter-option input:checked + .filter-checkbox::after { content: ''; width: 4px; height: 8px; border: 2px solid #09090D; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px,-1px); display: block; }
+    .filter-label { font-size: 14px; color: var(--contrast-body); transition: color 0.2s; }
+    .filter-option:hover .filter-label { color: var(--text); }
+    .filter-count { font-size: 12px; color: var(--muted2); margin-left: auto; }
+    .filter-divider { height: 1px; background: var(--border); margin: 4px 0 20px; }
+
+    /* Price range */
+    .price-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .price-input {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-family: 'Figtree', sans-serif; font-size: 13px;
+      padding: 9px 12px; outline: none; transition: border-color 0.2s;
+    }
+    .price-input:focus { border-color: var(--copper); }
+
+    .filter-reset { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Figtree', sans-serif; font-size: 13px; padding: 10px; border-radius: 10px; cursor: pointer; transition: border-color 0.2s, color 0.2s; margin-top: 8px; }
+    .filter-reset:hover { border-color: var(--copper); color: var(--copper); }
+
+    /* ═══ PRODUCT GRID ═══ */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .product-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden; cursor: pointer;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      text-decoration: none; display: flex; flex-direction: column;
+    }
+    .product-card:hover { border-color: var(--border-h); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+    .product-img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      background: var(--bg-card2); display: block;
+      transition: transform 0.4s;
+    }
+    .product-card:hover .product-img { transform: scale(1.03); }
+    .product-img-wrap { overflow: hidden; position: relative; }
+    .product-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--copper); color: #09090D;
+      font-size: 10px; font-weight: 800; letter-spacing: 1px;
+      padding: 3px 10px; border-radius: 100px; text-transform: uppercase;
+    }
+    .product-badge.new { background: #2ECC71; }
+    .product-badge.hot { background: #E74C3C; }
+    .product-info { padding: 16px 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .product-cat { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--copper); }
+    .product-name { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .product-desc { font-size: 13px; color: var(--muted); line-height: 1.5; flex: 1; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+    .product-price { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; letter-spacing: 0.5px; color: var(--text); }
+    .product-price span { font-size: 13px; color: var(--muted); font-family: 'Figtree', sans-serif; font-weight: 400; }
+    .product-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--copper-dim); border: 1px solid rgba(200,136,58,0.2);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s; flex-shrink: 0;
+    }
+    .product-card:hover .product-btn { background: var(--copper); border-color: var(--copper); }
+    .product-card:hover .product-btn svg { stroke: #09090D; }
+
+    /* ═══ PAGINATION ═══ */
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 40px; }
+    .page-btn {
+      width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--muted); text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .page-btn:hover { border-color: var(--copper); color: var(--copper); }
+    .page-btn.active { background: var(--copper); border-color: var(--copper); color: #09090D; }
+
+    /* ═══ MOBILE ═══ */
+    @media (max-width: 900px) {
+      .catalog-layout { grid-template-columns: 1fr; }
+      .filters { position: static; display: none; }
+      .filters.open { display: block; }
+      .filter-toggle-btn { display: flex; }
+    }
+    @media (max-width: 640px) {
+      .navbar { position: static; transform: none; width: 100%; border-radius: 0; top: 0; left: 0; }
+      .cat-section { padding: 0 12px; }
+      .cat-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .cat-card-title { font-size: 11px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .page-header { padding: 24px 16px 32px; }
+      .catalog-toolbar { padding: 0 16px; }
+      .catalog-layout { padding: 0 16px 60px; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .product-info { padding: 12px 14px 16px; }
+      .product-name { font-size: 13px; }
+      .product-price { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#products" style="position:fixed;top:-100%;left:16px;z-index:999;background:var(--copper);color:#09090D;padding:10px 20px;border-radius:8px;font-weight:700;text-decoration:none;transition:top 0.2s;">Перейти к товарам</a>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="nav">
+    <a href="./index.html" class="logo">UBE</a>
+    <div class="nav-links">
+      <a href="./catalog.html" class="active">Каталог</a>
+      <a href="./index.html#contacts">Контакты</a>
+      <a href="tel:+79649130555" class="nav-cta-btn">+7 964 913-05-55</a>
+    </div>
+    <button class="hamburger" id="ham" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <nav class="mobile-menu" id="mob" aria-label="Мобильное меню">
+    <a href="./catalog.html">Каталог</a>
+    <a href="./index.html#contacts">Контакты</a>
+    <a href="tel:+79649130555" style="color:var(--copper);">+7 964 913-05-55</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="breadcrumb">
+      <a href="./index.html">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Каталог</span>
+    </div>
+    <h1 class="page-title">КАТАЛОГ<br/>ОБОРУДОВАНИЯ</h1>
+    <p class="page-meta">248 единиц в наличии · обновлено сегодня</p>
+  </header>
+
+  <!-- CATEGORIES -->
+  <div class="cat-section">
+    <div class="cat-section-title">Выберите категорию</div>
+    <div class="cat-grid">
+      <a href="#" class="cat-card active" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-holod-pisch.jpg" alt="Тепловое и хлебопекарное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Тепловое / хлебопекарное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-holod-pisch-new.jpg" alt="Пищевое холодильное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Пищевое холодильное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-prom.jpg" alt="Морозильные лари" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Морозильные лари</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-orgteh.jpg" alt="Нейтральное оборудование" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Нейтральное оборудование</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-control.jpg" alt="Промышленное холодильное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Промышленное холодильное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-kassa.jpg" alt="Торговое оборудование" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Торговое оборудование</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-nejtral.jpg" alt="Промышленное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Промышленное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-holod-prom.jpg" alt="Водоснабжение" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Водоснабжение</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-teploe.jpg" alt="Оргтехника и канцелярия" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Оргтехника / канцелярия</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-torgovoe.jpg" alt="Расчётно-кассовое" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Расчётно-кассовое</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-telekom.jpg" alt="Телекоммуникационное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Телекоммуникационное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-morozilnye.jpg" alt="Торговый инвентарь" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Торговый инвентарь</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-voda.jpg" alt="Промышленное контрольное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Промышленное — контрольное</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="catalog-toolbar">
+    <button class="filter-toggle-btn" id="filterToggle">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      Фильтры
+    </button>
+    <div class="search-bar">
+      <input type="search" placeholder="Поиск по каталогу..." />
+      <button aria-label="Найти">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+    <select class="sort-select" aria-label="Сортировка">
+      <option>Новинки</option>
+      <option>Цена: по возрастанию</option>
+      <option>Цена: по убыванию</option>
+      <option>Популярные</option>
+    </select>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="catalog-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="filters" id="filtersPanel">
+      <div class="filter-title">Фильтры</div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">Категория</div>
+        <div class="filter-options">
+          <label class="filter-option"><input type="checkbox" checked /><span class="filter-checkbox"></span><span class="filter-label">Тепловое оборудование</span><span class="filter-count">42</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Холодильное пищевое</span><span class="filter-count">38</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Морозильные лари</span><span class="filter-count">24</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Нейтральное</span><span class="filter-count">31</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Хлебопекарное</span><span class="filter-count">19</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Торговое</span><span class="filter-count">26</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Промышленное</span><span class="filter-count">15</span></label>
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">Цена, ₽</div>
+        <div class="price-inputs">
+          <input class="price-input" type="number" placeholder="от" />
+          <input class="price-input" type="number" placeholder="до" />
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">Состояние</div>
+        <div class="filter-options">
+          <label class="filter-option"><input type="checkbox" checked /><span class="filter-checkbox"></span><span class="filter-label">После ТО</span><span class="filter-count">148</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Рабочее</span><span class="filter-count">82</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Требует ремонта</span><span class="filter-count">18</span></label>
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">Бренд</div>
+        <div class="filter-options">
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Abat</span><span class="filter-count">34</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Convito</span><span class="filter-count">21</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Hurakan</span><span class="filter-count">18</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Hoshizaki</span><span class="filter-count">12</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Другие</span><span class="filter-count">63</span></label>
+        </div>
+      </div>
+
+      <button class="filter-reset">Сбросить фильтры</button>
+    </aside>
+
+    <!-- PRODUCT GRID -->
+    <main id="products">
+      <div class="product-grid">
+
+        <!-- Card 1 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-teploe.jpg" alt="Конвекционная печь" loading="lazy" />
+            <span class="product-badge">ТО пройдено</span>
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Тепловое</div>
+            <div class="product-name">Конвекционная печь Abat КПП-4</div>
+            <div class="product-desc">4 уровня, инжектор пара, нерж. сталь. Пробег 2 года.</div>
+            <div class="product-footer">
+              <div class="product-price">85 000 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-holod-pisch.jpg" alt="Холодильный шкаф" loading="lazy" />
+            <span class="product-badge new">Новое</span>
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Холодильное</div>
+            <div class="product-name">Шкаф холодильный Polair CM107-S</div>
+            <div class="product-desc">700 л, t +1..+10°С, стеклянная дверь, LED.</div>
+            <div class="product-footer">
+              <div class="product-price">62 000 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-morozilnye.jpg" alt="Морозильный ларь" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Морозильное</div>
+            <div class="product-name">Ларь морозильный Бирюса 260КX</div>
+            <div class="product-desc">260 л, -18°С, откидная стеклянная крышка.</div>
+            <div class="product-footer">
+              <div class="product-price">28 500 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-holod-prom.jpg" alt="Промышленный холодильник" loading="lazy" />
+            <span class="product-badge hot">Хит</span>
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Промышленное</div>
+            <div class="product-name">Холодильная камера Север КХН-6.6</div>
+            <div class="product-desc">6,6 м³, сборно-разборная, готова к установке.</div>
+            <div class="product-footer">
+              <div class="product-price">145 000 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-prom.jpg" alt="Промышленная плита" loading="lazy" />
+            <span class="product-badge">ТО пройдено</span>
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Тепловое</div>
+            <div class="product-name">Плита газовая Abat ПКГ-4Ш</div>
+            <div class="product-desc">4 горелки, жарочный шкаф, нерж. покрытие.</div>
+            <div class="product-footer">
+              <div class="product-price">47 000 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 6 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-nejtral.jpg" alt="Нейтральный стол" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Нейтральное</div>
+            <div class="product-name">Стол производственный СПЦ 1500×700</div>
+            <div class="product-desc">Нерж. сталь AISI 304, нижняя полка, борт.</div>
+            <div class="product-footer">
+              <div class="product-price">18 000 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 7 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-torgovoe.jpg" alt="Прилавок" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Торговое</div>
+            <div class="product-name">Витрина холодильная Carboma ВХСп-1.3</div>
+            <div class="product-desc">1,3 м, +2..+8°С, подсветка, стеклянная крышка.</div>
+            <div class="product-footer">
+              <div class="product-price">54 000 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 8 -->
+        <a href="./product.html" class="product-card">
+          <div class="product-img-wrap">
+            <img class="product-img" src="./assets/images/cat-holod-pisch.jpg" alt="Расстоечный шкаф" loading="lazy" />
+            <span class="product-badge new">Новое</span>
+          </div>
+          <div class="product-info">
+            <div class="product-cat">Хлебопекарное</div>
+            <div class="product-name">Расстоечный шкаф Abat ШРТ-16</div>
+            <div class="product-desc">16 уровней, влажность 40–90%, +30..+45°С.</div>
+            <div class="product-footer">
+              <div class="product-price">39 000 <span>₽</span></div>
+              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="pagination">
+        <a href="#" class="page-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <a href="#" class="page-btn active">1</a>
+        <a href="#" class="page-btn">2</a>
+        <a href="#" class="page-btn">3</a>
+        <span style="color:var(--muted2);padding:0 4px;">…</span>
+        <a href="#" class="page-btn">12</a>
+        <a href="#" class="page-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/79649130555" target="_blank" rel="noopener"
+     style="position:fixed;bottom:28px;right:28px;z-index:50;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.4);transition:transform 0.2s;"
+     onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'" aria-label="WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const ham = document.getElementById('ham');
+    const mob = document.getElementById('mob');
+    const filterToggle = document.getElementById('filterToggle');
+    const filtersPanel = document.getElementById('filtersPanel');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    ham.addEventListener('click', () => {
+      const open = ham.classList.toggle('open');
+      mob.classList.toggle('open', open);
+      ham.setAttribute('aria-expanded', open);
+    });
+
+    filterToggle?.addEventListener('click', () => {
+      filtersPanel.classList.toggle('open');
+    });
+
+    function filterCat(el, name) {
+      document.querySelectorAll('.cat-grid .cat-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
+</body>
+</html>
