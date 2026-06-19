@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ube-equipment.ru/sitemap.xml

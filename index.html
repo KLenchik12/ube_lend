@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UBE — Оборудование для бизнеса б/у</title>
+  <title>UBE — Б/У оборудование для бизнеса | Купить выгодно</title>
+  <meta name="description" content="Покупайте б/у профессиональное оборудование для ресторанов, магазинов и производства. Холодильное, тепловое, торговое оборудование. Доставка по России и СНГ. Видеодемонстрация перед покупкой." />
+  <meta name="keywords" content="б/у оборудование, холодильное оборудование, тепловое оборудование, торговое оборудование, ресторанное оборудование, купить оборудование" />
+  <link rel="canonical" href="https://ube-equipment.ru/" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="UBE — Б/У оборудование для бизнеса" />
+  <meta property="og:description" content="Профессиональное б/у оборудование для ресторанов, магазинов и производства. Доставка по России и СНГ." />
+  <meta property="og:url" content="https://ube-equipment.ru/" />
+  <meta property="og:image" content="https://ube-equipment.ru/assets/images/cat-teploe.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Barlow Condensed (headings) + Figtree (body) -->
   
@@ -465,7 +475,7 @@
       /* Hero */
       .hero { min-height: 100svh; align-items: flex-start; }
       .hero-inner { padding: 88px 20px 40px !important; }
-      .hero-h1 { font-size: clamp(44px, 13vw, 60px) !important; line-height: 1.0 !important; margin-bottom: 16px !important; }
+      .hero-h1 { font-size: clamp(36px, 10vw, 52px) !important; line-height: 1.0 !important; margin-bottom: 16px !important; }
       .hero-sub { font-size: 16px !important; line-height: 1.6 !important; margin-bottom: 28px !important; }
 
       /* Section titles */
@@ -497,18 +507,17 @@
         font-size: 16px;
       }
 
-      /* Popular chips: horizontal scroll row */
+      /* Popular chips: single column on mobile */
       .popular-row {
-        display: flex;
-        flex-wrap: nowrap !important;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        gap: 8px;
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: visible;
+        gap: 10px;
         padding-bottom: 4px;
-        scrollbar-width: none;
       }
-      .popular-row::-webkit-scrollbar { display: none; }
-      .popular-chip { white-space: nowrap; flex-shrink: 0; }
+      .popular-row > span:first-child { font-size: 15px !important; }
+      .popular-chip { white-space: nowrap; font-size: 15px !important; padding: 8px 20px !important; width: 100%; text-align: center; box-sizing: border-box; }
 
       /* Stats: 3-col keeps, just reduce font */
       .stat-num { font-size: 38px !important; }
@@ -559,7 +568,7 @@
 
     /* ── Small mobile ── */
     @media (max-width: 375px) {
-      .hero-h1 { font-size: 40px !important; }
+      .hero-h1 { font-size: 32px !important; }
       .section-title { font-size: 30px !important; }
     }
 
@@ -641,12 +650,71 @@
       border: 1px solid rgba(200,136,58,0.25);
       flex-shrink: 0;
     }
+  /* ═══ CART DRAWER ═══ */
+  .cart-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px); }
+  .cart-overlay.open { opacity:1;pointer-events:all; }
+  .cart-drawer { position:fixed;top:0;right:0;height:100%;width:min(440px,100vw);background:#111118;border-left:1px solid #252530;z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+  .cart-drawer.open { transform:translateX(0); }
+  .cart-drawer-head { display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #252530;flex-shrink:0; }
+  .cart-drawer-title { font-family:'Barlow Condensed',sans-serif;font-size:22px;letter-spacing:3px;color:#F0EAE0; }
+  .cart-count-label { font-size:13px;color:#7A7690;margin-left:8px;font-family:'Figtree',sans-serif;letter-spacing:0; }
+  .cart-close-btn { background:none;border:none;cursor:pointer;color:#7A7690;padding:8px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:color 0.2s,background 0.2s;min-width:36px;min-height:36px; }
+  .cart-close-btn:hover { color:#F0EAE0;background:rgba(255,255,255,0.07); }
+  .cart-body { flex:1;overflow-y:auto;padding:0 24px; }
+  .cart-empty-state { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;height:100%;color:#7A7690;text-align:center;padding:40px 0; }
+  .cart-empty-state svg { opacity:0.25; }
+  .cart-empty-state p { font-size:15px; }
+  .cart-item { display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #252530; }
+  .cart-item-img { width:68px;height:68px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#16161F; }
+  .cart-item-info { flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px; }
+  .cart-item-name { font-size:13px;font-weight:600;color:#F0EAE0;line-height:1.35; }
+  .cart-item-price { font-size:15px;font-weight:700;color:#C8883A; }
+  .cart-item-remove { background:none;border:none;cursor:pointer;color:#55526A;padding:6px;display:flex;align-items:center;transition:color 0.2s;flex-shrink:0;align-self:center;border-radius:6px; }
+  .cart-item-remove:hover { color:#e55; }
+  .cart-footer { padding:20px 24px 28px;border-top:1px solid #252530;flex-shrink:0;display:flex;flex-direction:column;gap:10px; }
+  .cart-footer-title { font-size:12px;font-weight:700;color:#7A7690;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px; }
+  .cart-input { width:100%;background:#09090D;border:1px solid #252530;border-radius:10px;padding:12px 14px;font-size:14px;color:#F0EAE0;font-family:'Figtree',sans-serif;outline:none;transition:border-color 0.2s;-webkit-appearance:none; }
+  .cart-input::placeholder { color:#55526A; }
+  .cart-input:focus { border-color:#C8883A; }
+  .cart-submit-btn { width:100%;background:#C8883A;color:#09090D;font-size:15px;font-weight:700;border:none;border-radius:12px;padding:14px;cursor:pointer;font-family:'Figtree',sans-serif;transition:background 0.2s,transform 0.15s;min-height:50px;margin-top:2px; }
+  .cart-submit-btn:hover { background:#E0A050; }
+  .cart-submit-btn:active { transform:scale(0.98); }
+  .cart-success-msg { text-align:center;padding:12px;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.3);border-radius:10px;color:#2ECC71;font-size:14px;font-weight:600;display:none; }
+  .cart-success-msg.show { display:block; }
   </style>
 </head>
 <body>
 
   <!-- ✅ SKILL: skip link for keyboard accessibility -->
   <a href="#main" class="skip-link">Перейти к содержимому</a>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-modal="true" aria-label="Корзина">
+    <div class="cart-drawer-head">
+      <div style="display:flex;align-items:baseline;">
+        <span class="cart-drawer-title">КОРЗИНА</span>
+        <span class="cart-count-label" id="cart-count-label"></span>
+      </div>
+      <button class="cart-close-btn" onclick="closeCart()" aria-label="Закрыть">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <div class="cart-empty-state" id="cart-empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <p>Корзина пуста</p>
+      </div>
+      <div id="cart-items-list"></div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none">
+      <div class="cart-footer-title">Оставьте заявку</div>
+      <input class="cart-input" id="cart-name" placeholder="Ваше имя" type="text" autocomplete="name" />
+      <input class="cart-input" id="cart-phone" placeholder="Номер телефона" type="tel" autocomplete="tel" />
+      <div class="cart-success-msg" id="cart-success-msg">Заявка отправлена! Свяжемся в течение 15 минут.</div>
+      <button class="cart-submit-btn" id="cart-submit-btn" onclick="submitCartOrder()">Отправить заявку</button>
+    </div>
+  </aside>
 
   <!-- ═══════════ NAVBAR ═══════════ -->
   <nav class="navbar" id="nav" role="navigation" aria-label="Основная навигация">
@@ -656,7 +724,12 @@
       <a href="#order"      role="listitem">Как заказать</a>
       <a href="#categories" role="listitem">Каталог</a>
       <a href="#why"        role="listitem">Преимущества</a>
+      <a href="#reviews"    role="listitem">Отзывы</a>
       <a href="#contacts"   role="listitem">Контакты</a>
+      <button onclick="openCart()" role="listitem" style="position:relative;padding:8px 10px;background:none;border:none;cursor:pointer;display:flex;align-items:center;min-width:44px;min-height:44px;justify-content:center;" aria-label="Корзина">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;color:var(--muted);transition:color 0.2s;" onmouseover="this.style.color='var(--copper)'" onmouseout="this.style.color='var(--muted)'"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span id="nav-cart-badge" style="position:absolute;top:2px;right:2px;background:var(--copper);color:#09090D;font-size:10px;font-weight:800;min-width:16px;height:16px;border-radius:100px;display:none;align-items:center;justify-content:center;padding:0 4px;">0</span>
+      </button>
       <a href="tel:+79649130555" class="nav-cta-btn" role="listitem" aria-label="Позвонить нам">Позвонить</a>
     </div>
 
@@ -671,6 +744,7 @@
     <a href="#order"      role="menuitem">Как заказать</a>
     <a href="#categories" role="menuitem">Каталог</a>
     <a href="#why"        role="menuitem">Преимущества</a>
+    <a href="#reviews"    role="menuitem">Отзывы</a>
     <a href="#about"      role="menuitem">О компании</a>
     <a href="#contacts"   role="menuitem">Контакты</a>
     <a href="tel:+79649130555" style="color:var(--copper);font-weight:700;" role="menuitem">+7 964 913-05-55</a>
@@ -685,16 +759,11 @@
 
     <div class="hero-inner" style="position:relative;z-index:2;width:100%;max-width:1240px;margin:0 auto;padding:0 24px;padding-top:96px;">
 
-      <div class="chip reveal">
-        <svg width="7" height="7" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3.5" fill="var(--copper)"/></svg>
-        Б/у оборудование для бизнеса
-      </div>
-
       <!-- ✅ SKILL: Bebas Neue display + large type 88px+ -->
       <h1 id="hero-title" class="hero-h1 reveal d1 glow-copper"
           style="font-family:'Barlow Condensed',sans-serif;font-size:92px;line-height:0.93;
                  letter-spacing:2px;color:var(--text);margin-bottom:28px;">
-        ТЕХНИКА<br/>
+        ОБОРУДОВАНИЕ<br/>
         <span style="color:var(--copper);">ДЛЯ ВАШЕГО</span><br/>
         БИЗНЕСА
       </h1>
@@ -703,7 +772,7 @@
            max-width:520px;margin-bottom:36px;font-weight:400;">
         Холодильное, ресторанное, торговое и промышленное оборудование б/у.&nbsp;
         <strong style="color:var(--text);font-weight:600;">Более 400&nbsp;единиц</strong>
-        в наличии. Гарантия. Доставка по России.
+        в наличии. Гарантия. Доставка по России и СНГ.
       </p>
 
       <!-- ✅ SKILL: marketplace pattern — search bar as CTA -->
@@ -806,7 +875,7 @@
           </div>
           <h3 style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:12px;">Выберите на сайте</h3>
           <p style="font-size:16px;line-height:1.65;color:var(--muted);">
-            Просматривайте каталог, добавляйте понравившееся оборудование в корзину и оформляйте заказ онлайн.
+            Просматривайте каталог, выбирайте понравившееся оборудование и оформляйте заявку онлайн — мы свяжемся с вами в течение 15 минут.
           </p>
         </div>
 
@@ -834,9 +903,9 @@
               <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
             </svg>
           </div>
-          <h3 style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:10px;">Напишите или позвоните</h3>
+          <h3 style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:10px;">Напишите нам</h3>
           <p style="font-size:15px;line-height:1.6;color:var(--muted);margin-bottom:20px;">
-            Удобным способом — ответим быстро и поможем с выбором.
+            Ответим быстро и поможем с выбором.
           </p>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <a href="https://wa.me/79649130555" target="_blank" rel="noopener noreferrer"
@@ -875,11 +944,44 @@
           <div class="chip">Каталог</div>
           <h2 id="cat-h" class="section-title">13 КАТЕГОРИЙ<br/>ОБОРУДОВАНИЯ</h2>
         </div>
-        <a href="#" class="btn-ghost" style="min-height:44px;" aria-label="Весь каталог">Весь каталог →</a>
+        <a href="./catalog.html" class="btn-ghost" style="min-height:44px;" aria-label="Весь каталог">Весь каталог →</a>
       </div>
 
       <!-- ✅ SKILL: grid gap-5, consistent cards -->
       <div class="cat-grid" style="display:grid;gap:18px;">
+
+        <div class="cat-card reveal d1">
+          <img src="./assets/images/cat-holod-prom.jpg" alt="Водоснабжение и канализация" loading="lazy" />
+          <div class="cat-card-overlay"></div>
+          <div class="cat-card-label">
+            <span class="cat-card-title">Водоснабжение / канализация</span>
+            <div class="cat-card-arrow" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-card reveal d2">
+          <img src="./assets/images/cat-nejtral.jpg" alt="Нейтральное оборудование" loading="lazy" />
+          <div class="cat-card-overlay"></div>
+          <div class="cat-card-label">
+            <span class="cat-card-title">Нейтральное оборудование</span>
+            <div class="cat-card-arrow" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-card reveal d3">
+          <img src="./assets/images/cat-gruz.jpg" alt="Грузоподъёмное оборудование" loading="lazy" />
+          <div class="cat-card-overlay"></div>
+          <div class="cat-card-label">
+            <span class="cat-card-title">Грузоподъёмное оборудование</span>
+            <div class="cat-card-arrow" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
 
         <div class="cat-card reveal d1">
           <img src="./assets/images/cat-holod-pisch.jpg" alt="Тепловое и хлебопекарное оборудование" loading="lazy" />
@@ -893,10 +995,10 @@
         </div>
 
         <div class="cat-card reveal d2">
-          <img src="./assets/images/cat-invent.jpg" alt="Пищевое холодильное оборудование" loading="lazy" />
+          <img src="./assets/images/cat-orgteh.jpg" alt="Оборудование для ресторанов и кафе" loading="lazy" />
           <div class="cat-card-overlay"></div>
           <div class="cat-card-label">
-            <span class="cat-card-title">Пищевое холодильное</span>
+            <span class="cat-card-title">Оборудование для ресторанов и кафе</span>
             <div class="cat-card-arrow" aria-hidden="true">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
             </div>
@@ -904,10 +1006,10 @@
         </div>
 
         <div class="cat-card reveal d3">
-          <img src="./assets/images/cat-prom.jpg" alt="Морозильные лари" loading="lazy" />
+          <img src="./assets/images/cat-holod-pisch-new.jpg" alt="Пищевое холодильное оборудование" loading="lazy" />
           <div class="cat-card-overlay"></div>
           <div class="cat-card-label">
-            <span class="cat-card-title">Морозильные лари</span>
+            <span class="cat-card-title">Пищевое / Холодильное</span>
             <div class="cat-card-arrow" aria-hidden="true">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
             </div>
@@ -915,10 +1017,10 @@
         </div>
 
         <div class="cat-card reveal d1">
-          <img src="./assets/images/cat-orgteh.jpg" alt="Нейтральное оборудование" loading="lazy" />
+          <img src="./assets/images/cat-control.jpg" alt="Промышленное холодильное оборудование" loading="lazy" />
           <div class="cat-card-overlay"></div>
           <div class="cat-card-label">
-            <span class="cat-card-title">Нейтральное оборудование</span>
+            <span class="cat-card-title">Промышленное / Холодильное</span>
             <div class="cat-card-arrow" aria-hidden="true">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
             </div>
@@ -926,18 +1028,7 @@
         </div>
 
         <div class="cat-card reveal d2">
-          <img src="./assets/images/cat-control.jpg" alt="Промышленное холодильное" loading="lazy" />
-          <div class="cat-card-overlay"></div>
-          <div class="cat-card-label">
-            <span class="cat-card-title">Промышленное холодильное</span>
-            <div class="cat-card-arrow" aria-hidden="true">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="cat-card reveal d3">
-          <img src="./assets/images/cat-kassa.jpg" alt="Торговое оборудование" loading="lazy" />
+          <img src="./assets/images/cat-torgovoe.jpg" alt="Торговое оборудование" loading="lazy" />
           <div class="cat-card-overlay"></div>
           <div class="cat-card-label">
             <span class="cat-card-title">Торговое оборудование</span>
@@ -947,11 +1038,22 @@
           </div>
         </div>
 
-        <div class="cat-card reveal d1">
-          <img src="./assets/images/cat-nejtral.jpg" alt="Промышленное" loading="lazy" />
+        <div class="cat-card reveal d3">
+          <img src="./assets/images/cat-climat.jpg" alt="Промышленное климатическое оборудование" loading="lazy" />
           <div class="cat-card-overlay"></div>
           <div class="cat-card-label">
-            <span class="cat-card-title">Промышленное</span>
+            <span class="cat-card-title">Промышленное / климатическое</span>
+            <div class="cat-card-arrow" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-card reveal d1">
+          <img src="./assets/images/cat-invent.jpg" alt="Контрольно-измерительное оборудование" loading="lazy" />
+          <div class="cat-card-overlay"></div>
+          <div class="cat-card-label">
+            <span class="cat-card-title">Контрольно / измерительное</span>
             <div class="cat-card-arrow" aria-hidden="true">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
             </div>
@@ -959,65 +1061,10 @@
         </div>
 
         <div class="cat-card reveal d2">
-          <img src="./assets/images/cat-holod-prom.jpg" alt="Водоснабжение" loading="lazy" />
+          <img src="./assets/images/cat-press.jpg" alt="Прессы гидравлические" loading="lazy" />
           <div class="cat-card-overlay"></div>
           <div class="cat-card-label">
-            <span class="cat-card-title">Водоснабжение</span>
-            <div class="cat-card-arrow" aria-hidden="true">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="cat-card reveal d3">
-          <img src="./assets/images/cat-teploe.jpg" alt="Оргтехника и канцелярия" loading="lazy" />
-          <div class="cat-card-overlay"></div>
-          <div class="cat-card-label">
-            <span class="cat-card-title">Оргтехника / канцелярия</span>
-            <div class="cat-card-arrow" aria-hidden="true">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="cat-card reveal d1">
-          <img src="./assets/images/cat-torgovoe.jpg" alt="Расчётно-кассовое оборудование" loading="lazy" />
-          <div class="cat-card-overlay"></div>
-          <div class="cat-card-label">
-            <span class="cat-card-title">Расчётно-кассовое</span>
-            <div class="cat-card-arrow" aria-hidden="true">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="cat-card reveal d2">
-          <img src="./assets/images/cat-telekom.jpg" alt="Телекоммуникационное оборудование" loading="lazy" />
-          <div class="cat-card-overlay"></div>
-          <div class="cat-card-label">
-            <span class="cat-card-title">Телекоммуникационное</span>
-            <div class="cat-card-arrow" aria-hidden="true">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="cat-card reveal d3">
-          <img src="./assets/images/cat-morozilnye.jpg" alt="Торговый инвентарь" loading="lazy" />
-          <div class="cat-card-overlay"></div>
-          <div class="cat-card-label">
-            <span class="cat-card-title">Торговый инвентарь</span>
-            <div class="cat-card-arrow" aria-hidden="true">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="cat-card reveal d1">
-          <img src="./assets/images/cat-voda.jpg" alt="Промышленное контрольное" loading="lazy" />
-          <div class="cat-card-overlay"></div>
-          <div class="cat-card-label">
-            <span class="cat-card-title">Промышленное — контрольное</span>
+            <span class="cat-card-title">Прессы гидравлические</span>
             <div class="cat-card-arrow" aria-hidden="true">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
             </div>
@@ -1088,6 +1135,32 @@
           </div>
           <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:10px;">Оптовые цены</h3>
           <p style="font-size:16px;line-height:1.65;color:var(--muted);">Для оптовых клиентов — специальный прайс, который делает закупку ещё более выгодной.</p>
+        </div>
+
+        <div class="card reveal d3" style="padding:32px;">
+          <div class="adv-icon" style="margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--copper)"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="1" y="3" width="15" height="13" rx="2"/>
+              <path d="M16 8h4l3 3v5h-7V8z"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/>
+              <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+          </div>
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:10px;">Доставка по России и СНГ</h3>
+          <p style="font-size:16px;line-height:1.65;color:var(--muted);">Организуем доставку в любой регион. Оформление всех необходимых документов — берём на себя.</p>
+        </div>
+
+        <div class="card reveal d1" style="padding:32px;">
+          <div class="adv-icon" style="margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--copper)"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="23 7 16 12 23 17 23 7"/>
+              <rect x="1" y="5" width="15" height="14" rx="2"/>
+            </svg>
+          </div>
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:10px;">Видеодемонстрация перед покупкой</h3>
+          <p style="font-size:16px;line-height:1.65;color:var(--muted);">Покажем оборудование в работе на видео до оплаты — убедитесь в исправности сами.</p>
         </div>
 
       </div>
@@ -1280,6 +1353,68 @@
       <div style="margin-bottom:56px;" class="reveal">
         <div class="chip">Контакты</div>
         <h2 id="contacts-h" class="section-title">СВЯЖИТЕСЬ<br/>С НАМИ</h2>
+      </div>
+
+      <!-- Форма заявки -->
+      <div class="card reveal" style="padding:40px;margin-bottom:24px;max-width:560px;">
+        <h3 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;">Оставить заявку</h3>
+        <p style="font-size:15px;color:var(--muted);margin-bottom:28px;">Перезвоним в течение 15 минут и поможем с выбором</p>
+        <form id="callback-form" onsubmit="handleCallbackForm(event)" style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label for="cb-name" style="font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted2);font-weight:700;">Ваше имя</label>
+            <input id="cb-name" type="text" placeholder="Как вас зовут?" required
+              style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;
+                     padding:14px 18px;font-size:16px;color:var(--text);font-family:'Figtree',sans-serif;
+                     outline:none;transition:border-color 0.2s;width:100%;box-sizing:border-box;"
+              onfocus="this.style.borderColor='rgba(200,136,58,0.5)'"
+              onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label for="cb-phone" style="font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted2);font-weight:700;">Телефон</label>
+            <input id="cb-phone" type="tel" placeholder="+7 (___) ___-__-__" required
+              style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;
+                     padding:14px 18px;font-size:16px;color:var(--text);font-family:'Figtree',sans-serif;
+                     outline:none;transition:border-color 0.2s;width:100%;box-sizing:border-box;"
+              onfocus="this.style.borderColor='rgba(200,136,58,0.5)'"
+              onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <button type="submit"
+            style="background:var(--copper);color:#000;font-size:16px;font-weight:700;
+                   border:none;border-radius:12px;padding:16px 24px;cursor:pointer;
+                   font-family:'Figtree',sans-serif;transition:opacity 0.2s;margin-top:4px;"
+            onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+            Отправить заявку
+          </button>
+          <div id="cb-success" style="display:none;text-align:center;font-size:15px;color:#4ade80;font-weight:600;padding:10px 0;">
+            Заявка отправлена! Мы свяжемся с вами в ближайшее время.
+          </div>
+        </form>
+        <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
+          <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted2);font-weight:700;margin-bottom:14px;">Или свяжитесь напрямую</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <a href="tel:+79649130555"
+               style="display:flex;align-items:center;gap:8px;background:var(--copper);color:#000;
+                      font-size:14px;font-weight:700;padding:10px 18px;border-radius:100px;
+                      text-decoration:none;transition:opacity 0.2s;flex:1;justify-content:center;min-width:120px;"
+               onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'"
+               aria-label="Позвонить">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Позвонить
+            </a>
+            <a href="https://wa.me/79649130555" target="_blank" rel="noopener noreferrer"
+               class="msg-btn wa" style="flex:1;justify-content:center;min-width:120px;"
+               aria-label="WhatsApp">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="https://t.me/ube20" target="_blank" rel="noopener noreferrer"
+               class="msg-btn tg" style="flex:1;justify-content:center;min-width:120px;"
+               aria-label="Telegram">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#29B6F6" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.01 9.47c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.26 14.484l-2.95-.924c-.642-.2-.654-.642.136-.95l11.527-4.444c.535-.194 1.003.13.589.082z"/></svg>
+              Telegram
+            </a>
+          </div>
+        </div>
       </div>
 
       <div class="contacts-grid reveal" style="display:grid;grid-template-columns:1fr 1.4fr;gap:20px;">
@@ -1480,6 +1615,84 @@
         burger.setAttribute('aria-expanded', false);
       }
     });
+  // ── Cart ──
+  const CART_KEY = 'ube-cart-items';
+  function getCartItems() { try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch { return []; } }
+  function saveCartItems(items) { localStorage.setItem(CART_KEY, JSON.stringify(items)); localStorage.setItem('ube-cart', items.length); }
+  function updateCartBadge() {
+    const items = getCartItems();
+    const badge = document.getElementById('nav-cart-badge');
+    if (badge) { badge.textContent = items.length; badge.style.display = items.length > 0 ? 'flex' : 'none'; }
+    const label = document.getElementById('cart-count-label');
+    if (label) label.textContent = items.length > 0 ? ` · ${items.length} товар${items.length > 1 ? (items.length < 5 ? 'а' : 'ов') : ''}` : '';
+  }
+  updateCartBadge();
+  function renderCartItems() {
+    const items = getCartItems();
+    const list = document.getElementById('cart-items-list');
+    const empty = document.getElementById('cart-empty-state');
+    const footer = document.getElementById('cart-footer');
+    if (!list) return;
+    if (items.length === 0) { list.innerHTML = ''; if (empty) empty.style.display = 'flex'; if (footer) footer.style.display = 'none'; return; }
+    if (empty) empty.style.display = 'none';
+    if (footer) footer.style.display = 'flex';
+    list.innerHTML = items.map((item, i) => `
+      <div class="cart-item">
+        <img class="cart-item-img" src="${item.img || ''}" alt="${item.name}" onerror="this.style.display='none'">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${item.price} ₽</div>
+        </div>
+        <button class="cart-item-remove" onclick="removeCartItem(${i})" aria-label="Удалить">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>`).join('');
+    updateCartBadge();
+  }
+  function removeCartItem(index) { const items = getCartItems(); items.splice(index, 1); saveCartItems(items); renderCartItems(); }
+  function openCart() { renderCartItems(); document.getElementById('cart-overlay').classList.add('open'); document.getElementById('cart-drawer').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeCart() { document.getElementById('cart-overlay').classList.remove('open'); document.getElementById('cart-drawer').classList.remove('open'); document.body.style.overflow = ''; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+  function submitCartOrder() {
+    const name = document.getElementById('cart-name').value.trim();
+    const phone = document.getElementById('cart-phone').value.trim();
+    if (!name || !phone) {
+      document.getElementById('cart-name').style.borderColor = name ? '' : '#C8883A';
+      document.getElementById('cart-phone').style.borderColor = phone ? '' : '#C8883A';
+      return;
+    }
+    const btn = document.getElementById('cart-submit-btn');
+    btn.textContent = 'Отправляем...'; btn.disabled = true;
+    setTimeout(() => {
+      btn.style.display = 'none';
+      document.getElementById('cart-success-msg').classList.add('show');
+      saveCartItems([]); updateCartBadge();
+      setTimeout(() => {
+        renderCartItems(); btn.style.display = ''; btn.textContent = 'Отправить заявку'; btn.disabled = false;
+        document.getElementById('cart-success-msg').classList.remove('show');
+        document.getElementById('cart-name').value = ''; document.getElementById('cart-phone').value = '';
+      }, 3000);
+    }, 800);
+  }
+
+  function handleCallbackForm(e) {
+    e.preventDefault();
+    const form = document.getElementById('callback-form');
+    const btn = form.querySelector('button[type="submit"]');
+    btn.textContent = 'Отправляем...';
+    btn.disabled = true;
+    setTimeout(() => {
+      form.querySelectorAll('input').forEach(i => i.value = '');
+      btn.style.display = 'none';
+      document.getElementById('cb-success').style.display = 'block';
+      setTimeout(() => {
+        btn.style.display = 'block';
+        btn.textContent = 'Отправить заявку';
+        btn.disabled = false;
+        document.getElementById('cb-success').style.display = 'none';
+      }, 4000);
+    }, 800);
+  }
   </script>
 </body>
 </html>

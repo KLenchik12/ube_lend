@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Каталог — UBE</title>
+  <title>Каталог оборудования — UBE | Б/У оборудование для бизнеса</title>
+  <meta name="description" content="Каталог б/у профессионального оборудования: холодильное, тепловое, торговое, пищевое. 248 единиц в наличии. Доставка по России и СНГ." />
+  <link rel="canonical" href="https://ube-equipment.ru/catalog.html" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Каталог оборудования — UBE" />
+  <meta property="og:description" content="248 единиц б/у профессионального оборудования в наличии. Доставка по России и СНГ." />
+  <meta property="og:url" content="https://ube-equipment.ru/catalog.html" />
+  <meta property="og:image" content="https://ube-equipment.ru/assets/images/cat-teploe.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="stylesheet" href="./assets/fonts/fonts.css" />
   <style>
     html { scroll-behavior: smooth; }
@@ -255,6 +264,62 @@
     }
     .product-card:hover .product-btn { background: var(--copper); border-color: var(--copper); }
     .product-card:hover .product-btn svg { stroke: #09090D; }
+    .add-cart-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--copper-dim); border: 1px solid rgba(200,136,58,0.25);
+      border-radius: 10px; padding: 8px 14px; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: var(--copper);
+      font-family: 'Figtree', sans-serif; transition: background 0.2s, color 0.2s, border-color 0.2s;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .add-cart-btn:hover, .add-cart-btn.added { background: var(--copper); color: #09090D; border-color: var(--copper); }
+    .add-cart-btn.added svg { stroke: #09090D; }
+    .cart-nav-btn {
+      position: relative; background: none; border: none; cursor: pointer;
+      padding: 8px; display: flex; align-items: center; color: var(--muted);
+      transition: color 0.2s; min-width: 44px; min-height: 44px; justify-content: center;
+    }
+    .cart-nav-btn:hover { color: var(--copper); }
+    .cart-badge {
+      position: absolute; top: 2px; right: 2px;
+      background: var(--copper); color: #09090D;
+      font-size: 10px; font-weight: 800; line-height: 1;
+      min-width: 16px; height: 16px; border-radius: 100px;
+      display: none; align-items: center; justify-content: center; padding: 0 4px;
+    }
+    .cart-badge.visible { display: flex; }
+
+    /* ═══ CART DRAWER ═══ */
+    .cart-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px); }
+    .cart-overlay.open { opacity:1;pointer-events:all; }
+    .cart-drawer { position:fixed;top:0;right:0;height:100%;width:min(440px,100vw);background:var(--bg-card);border-left:1px solid var(--border);z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+    .cart-drawer.open { transform:translateX(0); }
+    .cart-drawer-head { display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0; }
+    .cart-drawer-title { font-family:'Barlow Condensed',sans-serif;font-size:22px;letter-spacing:3px;color:var(--text); }
+    .cart-count-label { font-size:13px;color:var(--muted);margin-left:8px;font-family:'Figtree',sans-serif;letter-spacing:0; }
+    .cart-close-btn { background:none;border:none;cursor:pointer;color:var(--muted);padding:8px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:color 0.2s,background 0.2s;min-width:36px;min-height:36px; }
+    .cart-close-btn:hover { color:var(--text);background:rgba(255,255,255,0.07); }
+    .cart-body { flex:1;overflow-y:auto;padding:0 24px; }
+    .cart-empty-state { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;height:100%;color:var(--muted);text-align:center;padding:40px 0; }
+    .cart-empty-state svg { opacity:0.25; }
+    .cart-empty-state p { font-size:15px; }
+    .cart-item { display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--border); }
+    .cart-item-img { width:68px;height:68px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--bg-card2); }
+    .cart-item-info { flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px; }
+    .cart-item-name { font-size:13px;font-weight:600;color:var(--text);line-height:1.35; }
+    .cart-item-price { font-size:15px;font-weight:700;color:var(--copper); }
+    .cart-item-remove { background:none;border:none;cursor:pointer;color:var(--muted2);padding:6px;display:flex;align-items:center;transition:color 0.2s;flex-shrink:0;align-self:center;border-radius:6px; }
+    .cart-item-remove:hover { color:#e55; }
+    .cart-footer { padding:20px 24px 28px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:10px; }
+    .cart-footer-title { font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px; }
+    .cart-input { width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text);font-family:'Figtree',sans-serif;outline:none;transition:border-color 0.2s;-webkit-appearance:none; }
+    .cart-input::placeholder { color:var(--muted2); }
+    .cart-input:focus { border-color:var(--copper); }
+    .cart-submit-btn { width:100%;background:var(--copper);color:#09090D;font-size:15px;font-weight:700;border:none;border-radius:12px;padding:14px;cursor:pointer;font-family:'Figtree',sans-serif;transition:background 0.2s,transform 0.15s;min-height:50px;margin-top:2px; }
+    .cart-submit-btn:hover { background:var(--copper-lt); }
+    .cart-submit-btn:active { transform:scale(0.98); }
+    .cart-success-msg { text-align:center;padding:12px;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.3);border-radius:10px;color:#2ECC71;font-size:14px;font-weight:600;display:none; }
+    .cart-success-msg.show { display:block; }
 
     /* ═══ PAGINATION ═══ */
     .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 40px; }
@@ -296,12 +361,44 @@
 
   <a class="skip-link" href="#products" style="position:fixed;top:-100%;left:16px;z-index:999;background:var(--copper);color:#09090D;padding:10px 20px;border-radius:8px;font-weight:700;text-decoration:none;transition:top 0.2s;">Перейти к товарам</a>
 
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-modal="true" aria-label="Корзина">
+    <div class="cart-drawer-head">
+      <div style="display:flex;align-items:baseline;gap:0;">
+        <span class="cart-drawer-title">КОРЗИНА</span>
+        <span class="cart-count-label" id="cart-count-label"></span>
+      </div>
+      <button class="cart-close-btn" onclick="closeCart()" aria-label="Закрыть">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <div class="cart-empty-state" id="cart-empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <p>Корзина пуста</p>
+      </div>
+      <div id="cart-items-list"></div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none">
+      <div class="cart-footer-title">Оставьте заявку</div>
+      <input class="cart-input" id="cart-name" placeholder="Ваше имя" type="text" autocomplete="name" />
+      <input class="cart-input" id="cart-phone" placeholder="Номер телефона" type="tel" autocomplete="tel" />
+      <div class="cart-success-msg" id="cart-success-msg">Заявка отправлена! Свяжемся в течение 15 минут.</div>
+      <button class="cart-submit-btn" id="cart-submit-btn" onclick="submitCartOrder()">Отправить заявку</button>
+    </div>
+  </aside>
+
   <!-- NAVBAR -->
   <nav class="navbar" id="nav">
     <a href="./index.html" class="logo">UBE</a>
     <div class="nav-links">
       <a href="./catalog.html" class="active">Каталог</a>
       <a href="./index.html#contacts">Контакты</a>
+      <button class="cart-nav-btn" onclick="openCart()" aria-label="Корзина">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </button>
       <a href="tel:+79649130555" class="nav-cta-btn">+7 964 913-05-55</a>
     </div>
     <button class="hamburger" id="ham" aria-label="Меню" aria-expanded="false">
@@ -330,69 +427,59 @@
     <div class="cat-section-title">Выберите категорию</div>
     <div class="cat-grid">
       <a href="#" class="cat-card active" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-holod-pisch.jpg" alt="Тепловое и хлебопекарное" loading="lazy" />
+        <img src="./assets/images/cat-holod-prom.jpg" alt="Водоснабжение/канализация" loading="lazy" />
         <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Тепловое / хлебопекарное</span></div>
+        <div class="cat-card-label"><span class="cat-card-title">Водоснабжение / канализация</span></div>
       </a>
       <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-holod-pisch-new.jpg" alt="Пищевое холодильное" loading="lazy" />
-        <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Пищевое холодильное</span></div>
-      </a>
-      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-prom.jpg" alt="Морозильные лари" loading="lazy" />
-        <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Морозильные лари</span></div>
-      </a>
-      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-orgteh.jpg" alt="Нейтральное оборудование" loading="lazy" />
+        <img src="./assets/images/cat-nejtral.jpg" alt="Нейтральное оборудование" loading="lazy" />
         <div class="cat-card-overlay"></div>
         <div class="cat-card-label"><span class="cat-card-title">Нейтральное оборудование</span></div>
       </a>
       <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-control.jpg" alt="Промышленное холодильное" loading="lazy" />
+        <img src="./assets/images/cat-gruz.jpg" alt="Грузоподъёмное оборудование" loading="lazy" />
         <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Промышленное холодильное</span></div>
+        <div class="cat-card-label"><span class="cat-card-title">Грузоподъёмное оборудование</span></div>
       </a>
       <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-kassa.jpg" alt="Торговое оборудование" loading="lazy" />
+        <img src="./assets/images/cat-holod-pisch.jpg" alt="Тепловое/хлебопекарное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Тепловое / хлебопекарное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-orgteh.jpg" alt="Оборудование для ресторанов и кафе" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Оборудование для ресторанов и кафе</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-holod-pisch-new.jpg" alt="Пищевое/Холодильное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Пищевое / Холодильное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-control.jpg" alt="Промышленное/Холодильное" loading="lazy" />
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-label"><span class="cat-card-title">Промышленное / Холодильное</span></div>
+      </a>
+      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
+        <img src="./assets/images/cat-torgovoe.jpg" alt="Торговое оборудование" loading="lazy" />
         <div class="cat-card-overlay"></div>
         <div class="cat-card-label"><span class="cat-card-title">Торговое оборудование</span></div>
       </a>
       <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-nejtral.jpg" alt="Промышленное" loading="lazy" />
+        <img src="./assets/images/cat-climat.jpg" alt="Промышленное/климатическое" loading="lazy" />
         <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Промышленное</span></div>
+        <div class="cat-card-label"><span class="cat-card-title">Промышленное / климатическое</span></div>
       </a>
       <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-holod-prom.jpg" alt="Водоснабжение" loading="lazy" />
+        <img src="./assets/images/cat-invent.jpg" alt="Контрольно/измерительное" loading="lazy" />
         <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Водоснабжение</span></div>
+        <div class="cat-card-label"><span class="cat-card-title">Контрольно / измерительное</span></div>
       </a>
       <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-teploe.jpg" alt="Оргтехника и канцелярия" loading="lazy" />
+        <img src="./assets/images/cat-press.jpg" alt="Прессы гидравлические" loading="lazy" />
         <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Оргтехника / канцелярия</span></div>
-      </a>
-      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-torgovoe.jpg" alt="Расчётно-кассовое" loading="lazy" />
-        <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Расчётно-кассовое</span></div>
-      </a>
-      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-telekom.jpg" alt="Телекоммуникационное" loading="lazy" />
-        <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Телекоммуникационное</span></div>
-      </a>
-      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-morozilnye.jpg" alt="Торговый инвентарь" loading="lazy" />
-        <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Торговый инвентарь</span></div>
-      </a>
-      <a href="#" class="cat-card" onclick="filterCat(this); return false;">
-        <img src="./assets/images/cat-voda.jpg" alt="Промышленное контрольное" loading="lazy" />
-        <div class="cat-card-overlay"></div>
-        <div class="cat-card-label"><span class="cat-card-title">Промышленное — контрольное</span></div>
+        <div class="cat-card-label"><span class="cat-card-title">Прессы гидравлические</span></div>
       </a>
     </div>
   </div>
@@ -427,13 +514,17 @@
       <div class="filter-section">
         <div class="filter-section-title">Категория</div>
         <div class="filter-options">
-          <label class="filter-option"><input type="checkbox" checked /><span class="filter-checkbox"></span><span class="filter-label">Тепловое оборудование</span><span class="filter-count">42</span></label>
-          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Холодильное пищевое</span><span class="filter-count">38</span></label>
-          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Морозильные лари</span><span class="filter-count">24</span></label>
-          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Нейтральное</span><span class="filter-count">31</span></label>
-          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Хлебопекарное</span><span class="filter-count">19</span></label>
-          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Торговое</span><span class="filter-count">26</span></label>
-          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Промышленное</span><span class="filter-count">15</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Водоснабжение / канализация</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Нейтральное оборудование</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Грузоподъёмное оборудование</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Тепловое / хлебопекарное</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Оборудование для ресторанов и кафе</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Пищевое / Холодильное</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Промышленное / Холодильное</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Торговое оборудование</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Промышленное / климатическое</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Контрольно / измерительное</span></label>
+          <label class="filter-option"><input type="checkbox" /><span class="filter-checkbox"></span><span class="filter-label">Прессы гидравлические</span></label>
         </div>
       </div>
 
@@ -490,7 +581,10 @@
             <div class="product-desc">4 уровня, инжектор пара, нерж. сталь. Пробег 2 года.</div>
             <div class="product-footer">
               <div class="product-price">85 000 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -507,7 +601,10 @@
             <div class="product-desc">700 л, t +1..+10°С, стеклянная дверь, LED.</div>
             <div class="product-footer">
               <div class="product-price">62 000 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -523,7 +620,10 @@
             <div class="product-desc">260 л, -18°С, откидная стеклянная крышка.</div>
             <div class="product-footer">
               <div class="product-price">28 500 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -540,7 +640,10 @@
             <div class="product-desc">6,6 м³, сборно-разборная, готова к установке.</div>
             <div class="product-footer">
               <div class="product-price">145 000 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -557,7 +660,10 @@
             <div class="product-desc">4 горелки, жарочный шкаф, нерж. покрытие.</div>
             <div class="product-footer">
               <div class="product-price">47 000 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -573,7 +679,10 @@
             <div class="product-desc">Нерж. сталь AISI 304, нижняя полка, борт.</div>
             <div class="product-footer">
               <div class="product-price">18 000 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -589,7 +698,10 @@
             <div class="product-desc">1,3 м, +2..+8°С, подсветка, стеклянная крышка.</div>
             <div class="product-footer">
               <div class="product-price">54 000 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -606,7 +718,10 @@
             <div class="product-desc">16 уровней, влажность 40–90%, +30..+45°С.</div>
             <div class="product-footer">
               <div class="product-price">39 000 <span>₽</span></div>
-              <div class="product-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+              <button class="add-cart-btn" onclick="addToCart(event, this)" aria-label="Добавить в корзину">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                В корзину
+              </button>
             </div>
           </div>
         </a>
@@ -661,6 +776,124 @@
     function filterCat(el, name) {
       document.querySelectorAll('.cat-grid .cat-card').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
+    }
+
+    // ── Cart ──
+    const CART_KEY = 'ube-cart-items';
+    const cartSVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
+    const checkSVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+    function getCartItems() {
+      try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch { return []; }
+    }
+    function saveCartItems(items) {
+      localStorage.setItem(CART_KEY, JSON.stringify(items));
+      localStorage.setItem('ube-cart', items.length);
+    }
+    function updateCartBadge() {
+      const items = getCartItems();
+      const badge = document.getElementById('cart-badge');
+      if (badge) { badge.textContent = items.length; badge.classList.toggle('visible', items.length > 0); }
+      const label = document.getElementById('cart-count-label');
+      if (label) label.textContent = items.length > 0 ? ` · ${items.length} товар${items.length > 1 ? (items.length < 5 ? 'а' : 'ов') : ''}` : '';
+    }
+    updateCartBadge();
+
+    function renderCartItems() {
+      const items = getCartItems();
+      const list = document.getElementById('cart-items-list');
+      const empty = document.getElementById('cart-empty-state');
+      const footer = document.getElementById('cart-footer');
+      if (!list) return;
+      if (items.length === 0) {
+        list.innerHTML = '';
+        if (empty) empty.style.display = 'flex';
+        if (footer) footer.style.display = 'none';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+      if (footer) footer.style.display = 'flex';
+      list.innerHTML = items.map((item, i) => `
+        <div class="cart-item">
+          <img class="cart-item-img" src="${item.img || ''}" alt="${item.name}" onerror="this.style.display='none'">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${item.price} ₽</div>
+          </div>
+          <button class="cart-item-remove" onclick="removeCartItem(${i})" aria-label="Удалить">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>`).join('');
+      updateCartBadge();
+    }
+
+    function removeCartItem(index) {
+      const items = getCartItems();
+      items.splice(index, 1);
+      saveCartItems(items);
+      renderCartItems();
+    }
+
+    function openCart() {
+      renderCartItems();
+      document.getElementById('cart-overlay').classList.add('open');
+      document.getElementById('cart-drawer').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCart() {
+      document.getElementById('cart-overlay').classList.remove('open');
+      document.getElementById('cart-drawer').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+    function addToCart(e, btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const card = btn.closest('.product-card');
+      const name = card?.querySelector('.product-name')?.textContent?.trim() || 'Товар';
+      const priceRaw = card?.querySelector('.product-price')?.textContent?.replace(/[^\d\s]/g, '').trim() || '';
+      const img = card?.querySelector('.product-img')?.src || '';
+      const items = getCartItems();
+      const exists = items.findIndex(it => it.name === name);
+      if (exists === -1) items.push({ name, price: priceRaw, img });
+      saveCartItems(items);
+      updateCartBadge();
+      btn.classList.add('added');
+      btn.innerHTML = checkSVG + ' Добавлено';
+      setTimeout(() => {
+        btn.classList.remove('added');
+        btn.innerHTML = cartSVG + ' В корзину';
+      }, 1500);
+    }
+
+    function submitCartOrder() {
+      const name = document.getElementById('cart-name').value.trim();
+      const phone = document.getElementById('cart-phone').value.trim();
+      if (!name || !phone) {
+        document.getElementById('cart-name').style.borderColor = name ? '' : 'var(--copper)';
+        document.getElementById('cart-phone').style.borderColor = phone ? '' : 'var(--copper)';
+        return;
+      }
+      const btn = document.getElementById('cart-submit-btn');
+      btn.textContent = 'Отправляем...';
+      btn.disabled = true;
+      setTimeout(() => {
+        const msg = document.getElementById('cart-success-msg');
+        btn.style.display = 'none';
+        msg.classList.add('show');
+        saveCartItems([]);
+        updateCartBadge();
+        setTimeout(() => {
+          renderCartItems();
+          btn.style.display = '';
+          btn.textContent = 'Отправить заявку';
+          btn.disabled = false;
+          msg.classList.remove('show');
+          document.getElementById('cart-name').value = '';
+          document.getElementById('cart-phone').value = '';
+        }, 3000);
+      }, 800);
     }
   </script>
 </body>
